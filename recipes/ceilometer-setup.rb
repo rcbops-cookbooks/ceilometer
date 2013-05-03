@@ -16,10 +16,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# this does setup, registers the service with keystone
+# and lays down the central agent (which can only exist once currently)
 
-# this not only does setup, but lays down the infra components,
-# too -- api, collector, etc.
-#
+# die early if setup has already been run on another node
+# TODO (mancdaz) - search for a ceilometer-setup role here as other cookbooks?
+#if not search(:node, 'recipes:ceilometer\:\:ceilometer-setup').empty?
+#  Chef::Application.fatal! "You can only have one node with the ceilometer-setup role"
+#end
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
@@ -47,7 +51,8 @@ keystone_admin_user = keystone["admin_user"]
 keystone_admin_password = keystone["users"][keystone_admin_user]["password"]
 keystone_admin_tenant = keystone["users"][keystone_admin_user]["default_tenant"]
 
-ceilometer_api = get_bind_endpoint("ceilometer", "api")
+#ceilometer_api = get_access_endpoint("ceilometer-api", "api", "ceilometer")
+#ceilometer_api = get_bind_endpoint("ceilometer", "api")
 
 mysql_info = create_db_and_user("mysql",
                                 node["ceilometer"]["db"]["name"],
@@ -67,21 +72,6 @@ keystone_service "Register Ceilometer Service" do
   action :create
 end
 
-# register the endpoint
-keystone_endpoint "Register Ceilometer Endpoint" do
-  auth_host ks_admin_endpoint["host"]
-  auth_port ks_admin_endpoint["port"]
-  auth_protocol ks_admin_endpoint["scheme"]
-  api_ver ks_admin_endpoint["path"]
-  auth_token keystone["admin_token"]
-  service_type "metering"
-  endpoint_region "RegionOne"
-  endpoint_adminurl ceilometer_api["uri"]
-  endpoint_internalurl ceilometer_api["uri"]
-  endpoint_publicurl ceilometer_api["uri"]
-  action :create
-end
-
 # register the service user
 keystone_user "Register Service User" do
   auth_host ks_admin_endpoint["host"]
@@ -92,7 +82,7 @@ keystone_user "Register Service User" do
   tenant_name node["ceilometer"]["service_tenant_name"]
   user_name node["ceilometer"]["service_user"]
   user_pass node["ceilometer"]["service_pass"]
-  user_enabled "1"
+  user_enabled true
   action :create
 end
 
@@ -110,10 +100,11 @@ keystone_role "Grant Ceilometer service role" do
 end
 
 
-# service and package list probably needs to be split
-platform_options["infra_package_list"].each do |pkg|
+# we can only run a single central agent right now so we can install it here
+# (since we can also only run setup once)
+platform_options["central_agent_package_list"].each do |pkg|
   package pkg do
-    action :install
+    action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
     options platform_options["package_overrides"]
   end
 end
@@ -127,7 +118,7 @@ execute "ceilometer db sync" do
   action :run
 end
 
-platform_options["infra_service_list"].each do |svc|
+platform_options["central_agent_service_list"].each do |svc|
   service svc do
     supports :status => true, :restart => true
     action [ :enable, :start ]

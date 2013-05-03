@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: ceilometer
-# Recipe:: ceilometer-compute
+# Recipe:: ceilometer-collector
 #
 # Copyright 2013, Rackspace US, Inc.
 #
@@ -17,11 +17,12 @@
 # limitations under the License.
 #
 
-# this sets up ceilometer on compute nodes (runs the compute agent)
+# this sets up ceilometer on collector (runs the ceilometer collector to process
+# queue messages that are placed there by the agents)
 
 platform_options = node["ceilometer"]["platform"]
 
-platform_options["compute_package_list"].each do |pkg|
+platform_options["collector_package_list"].each do |pkg|
   package pkg do
     action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
     options platform_options["package_overrides"]
@@ -30,7 +31,7 @@ end
 
 include_recipe "ceilometer::ceilometer-common"
 
-platform_options["compute_service_list"].each do |svc|
+platform_options["collector_service_list"].each do |svc|
   service svc do
     supports :status => true, :restart => true
     action [ :enable, :start ]

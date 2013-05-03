@@ -25,17 +25,26 @@ default["ceilometer"]["logging"]["verbose"] = "false"
 case platform
 when "fedora", "redhat", "centos", "scientific", "amazon"
   default["ceilometer"]["platform"] = {
-    "infra_package_list" => [],
+    "central_agent_package_list" => [],
+    "central_agent_service_list" => [],
+    "collector_package_list" => [],
+    "collector_service_list" => [],
+    "package_list" => [],
+    "package_list" => [],
     "compute_package_list" => [],
+    "compute_service_list" => [],
     "package_overrides" => ""
   }
 when "ubuntu", "debian"
   default["ceilometer"]["platform"] = {
-    "infra_package_list" => ["ceilometer-collector", "ceilometer-agent-central", "ceilometer-api"],
-    "infra_service_list" => ["ceilometer-collector", "ceilometer-agent-central", "ceilometer-api"],
+    "central_agent_package_list" => ["ceilometer-agent-central"],
+    "central_agent_service_list" => ["ceilometer-agent-central"],
+    "collector_package_list" => ["ceilometer-collector"],
+    "collector_service_list" => ["ceilometer-collector"],
+    "api_package_list" => ["ceilometer-api"],
+    "api_service_list" => ["ceilometer-api"],
     "compute_package_list" => ["ceilometer-agent-compute"],
     "compute_service_list" => ["ceilometer-agent-compute"],
-    "compute_package_list" => ["ceilometer-agent-compute"],
     "package_overrides" => "-o Dpkg::Options:='--force-confold' -o Dpkg::Options:='--force-confdef'"
   }
 end

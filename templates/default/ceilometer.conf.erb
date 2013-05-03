@@ -15,22 +15,7 @@ mysql_engine=InnoDB
 
 auth_strategy=keystone
 
-[ceilometer]
 os_username=<%= @ceilometer_admin %>
 os_password=<%= @ceilometer_password %>
 os_tenant_name=<%= @ceilometer_tenant %>
 os_auth_url=<%= @keystone_auth_url %>
-
-[keystone_authtoken]
-service_protocol=<%= @keystone_service_protocol %>
-service_host=<%= @keystone_service_host %>
-service_port=<%= @keystone_service_port %>
-auth_protocol=<%= @keystone_auth_protocol %>
-auth_host=<%= @keystone_auth_host %>
-auth_port=<%= @keystone_auth_port %>
-
-admin_tenant_name=<%= @ceilometer_tenant %>
-admin_user=<%= @ceilometer_admin %>
-admin_password=<%= @ceilometer_password %>
-
-signing_dir=/var/lib/ceilometer
