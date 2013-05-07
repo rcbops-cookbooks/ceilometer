@@ -38,7 +38,7 @@ platform_options["api_service_list"].each do |svc|
   end
 end
 
-ceilometer_api = get_access_endpoint("ceilometer-api", "api", "ceilometer")
+ceilometer_api = get_access_endpoint("ceilometer-api", "ceilometer","api")
 ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
 keystone = get_settings_by_role("keystone", "keystone")
 
