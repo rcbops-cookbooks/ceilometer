@@ -26,6 +26,12 @@ ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
 mysql_connect_ip = get_access_endpoint("mysql-master", "mysql", "db")["host"]
 rabbit_info = get_access_endpoint("rabbitmq-server", "rabbitmq", "queue")
 
+platform_options["supporting_packages"].each do |pkg|
+  package pkg do
+    action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
+    options platform_options["package_overrides"]
+  end
+end
 
 # all ceilometers, server or client can share the same conf file
 
