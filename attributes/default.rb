@@ -22,26 +22,26 @@ default["ceilometer"]["logging"]["verbose"] = "false"
 # spoofing metrics
 # default["ceilometer"]["metering_secret"] = "ceilometer"
 
-case platform
-when "fedora", "redhat", "centos", "scientific", "amazon"
+case platform_family
+when "rhel"
   default["ceilometer"]["platform"] = {
-    "central_agent_package_list" => [],
-    "central_agent_service_list" => [],
-    "collector_package_list" => [],
-    "collector_service_list" => [],
-    "package_list" => [],
-    "package_list" => [],
-    "compute_package_list" => [],
-    "compute_service_list" => [],
+    "central_agent_package_list" => ["openstack-ceilometer-central"],
+    "central_agent_service_list" => ["openstack-ceilometer-central"],
+    "collector_package_list" => ["openstack-ceilometer-collector"],
+    "collector_service_list" => ["openstack-ceilometer-collector"],
+    "api_package_list" => ["openstack-ceilometer-api"],
+    "api_service_list" => ["openstack-ceilometer-api"],
+    "compute_package_list" => ["openstack-ceilometer-compute"],
+    "compute_service_list" => ["openstack-ceilometer-compute"],
     "package_overrides" => ""
   }
-when "ubuntu", "debian"
+when "debian"
   default["ceilometer"]["platform"] = {
     "central_agent_package_list" => ["ceilometer-agent-central"],
     "central_agent_service_list" => ["ceilometer-agent-central"],
     "collector_package_list" => ["ceilometer-collector"],
     "collector_service_list" => ["ceilometer-collector"],
-    "api_package_list" => ["ceilometer-api"],
+    "api_package_list" => ["ceilometer-api, python-mysqldb"],
     "api_service_list" => ["ceilometer-api"],
     "compute_package_list" => ["ceilometer-agent-compute"],
     "compute_service_list" => ["ceilometer-agent-compute"],
