@@ -54,10 +54,12 @@ keystone_admin_tenant = keystone["users"][keystone_admin_user]["default_tenant"]
 #ceilometer_api = get_access_endpoint("ceilometer-api", "api", "ceilometer")
 #ceilometer_api = get_bind_endpoint("ceilometer", "api")
 
-mysql_info = create_db_and_user("mysql",
-                                node["ceilometer"]["db"]["name"],
-                                node["ceilometer"]["db"]["username"],
-                                node["ceilometer"]["db"]["password"])
+mysql_info = create_db_and_user(
+  "mysql",
+  node["ceilometer"]["db"]["name"],
+  node["ceilometer"]["db"]["username"],
+  node["ceilometer"]["db"]["password"]
+)
 
 # register the service
 keystone_service "Register Ceilometer Service" do
@@ -122,6 +124,6 @@ platform_options["central_agent_service_list"].each do |svc|
   service svc do
     supports :status => true, :restart => true
     action [ :enable, :start ]
-    subscribes :restart, resources(:template => "/etc/ceilometer/ceilometer.conf"), :delayed
+    subscribes :restart, "template[/etc/ceilometer/ceilometer.conf]", :delayed
   end
 end
