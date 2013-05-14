@@ -48,7 +48,7 @@ directory "/var/lib/ceilometer" do
   action :create
   owner "ceilometer"
   group "ceilometer"
-  mode "770"
+  mode "700"
 end
 
 template "/etc/ceilometer/ceilometer.conf" do
