@@ -34,6 +34,6 @@ platform_options["compute_service_list"].each do |svc|
   service svc do
     supports :status => true, :restart => true
     action [ :enable, :start ]
-    subscribes :restart, resources(:template => "/etc/ceilometer/ceilometer.conf"), :delayed
+    subscribes :restart, "template[/etc/ceilometer/ceilometer.conf]", :delayed
   end
 end
