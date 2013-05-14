@@ -55,19 +55,21 @@ template "/etc/ceilometer/ceilometer.conf" do
   owner "ceilometer"
   group "ceilometer"
   mode "0660"
-  variables("metering_secret" => ceilometer["metering_secret"],
-            "mysql_user" => ceilometer["db"]["username"],
-            "mysql_password" => ceilometer["db"]["password"],
-            "mysql_host" => mysql_connect_ip,
-            "mysql_db" => ceilometer["db"]["name"],
-            "ceilometer_admin" => ceilometer["service_user"],
-            "ceilometer_password" => ceilometer["service_pass"],
-            "ceilometer_tenant" => ceilometer["service_tenant_name"],
-            "keystone_auth_url" => ks_service_endpoint["uri"],
-            "keystone_service_protocol" => ks_service_endpoint["scheme"],
-            "keystone_service_port" => ks_service_endpoint["port"],
-            "keystone_service_host" => ks_service_endpoint["host"],
-            "keystone_auth_protocol" => ks_admin_endpoint["scheme"],
-            "keystone_auth_port" => ks_admin_endpoint["port"],
-            "keystone_auth_host" => ks_admin_endpoint["host"])
+  variables(
+    "metering_secret" => ceilometer["metering_secret"],
+    "mysql_user" => ceilometer["db"]["username"],
+    "mysql_password" => ceilometer["db"]["password"],
+    "mysql_host" => mysql_connect_ip,
+    "mysql_db" => ceilometer["db"]["name"],
+    "ceilometer_admin" => ceilometer["service_user"],
+    "ceilometer_password" => ceilometer["service_pass"],
+    "ceilometer_tenant" => ceilometer["service_tenant_name"],
+    "keystone_auth_url" => ks_service_endpoint["uri"],
+    "keystone_service_protocol" => ks_service_endpoint["scheme"],
+    "keystone_service_port" => ks_service_endpoint["port"],
+    "keystone_service_host" => ks_service_endpoint["host"],
+    "keystone_auth_protocol" => ks_admin_endpoint["scheme"],
+    "keystone_auth_port" => ks_admin_endpoint["port"],
+    "keystone_auth_host" => ks_admin_endpoint["host"]
+  )
 end
