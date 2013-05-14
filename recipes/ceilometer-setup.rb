@@ -57,6 +57,16 @@ mysql_info = create_db_and_user(
   node["ceilometer"]["db"]["password"]
 )
 
+include_recipe "ceilometer::ceilometer-common"
+
+execute "ceilometer db sync" do
+  command "ceilometer-dbsync"
+  user "ceilometer"
+  group "ceilometer"
+  action :nothing
+  subscribes :run, "template[/etc/ceilometer/ceilometer.conf]", :immediately
+end
+
 # register the service
 keystone_service "Register Ceilometer Service" do
   auth_host ks_admin_endpoint["host"]

@@ -29,13 +29,6 @@ end
 
 include_recipe "ceilometer::ceilometer-common"
 
-execute "ceilometer db sync" do
-  command "ceilometer-dbsync"
-  user "ceilometer"
-  group "ceilometer"
-  action :run
-end
-
 platform_options["central_agent_service_list"].each do |svc|
   service svc do
     supports :status => true, :restart => true
