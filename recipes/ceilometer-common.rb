@@ -24,6 +24,7 @@ ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-a
 ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
 
 mysql_connect_ip = get_access_endpoint("mysql-master", "mysql", "db")["host"]
+#TODO(mancdaz) - search for a list of rabbits and use HA rabbit queues
 rabbit_info = get_access_endpoint("rabbitmq-server", "rabbitmq", "queue")
 
 platform_options["supporting_packages"].each do |pkg|
@@ -70,6 +71,8 @@ template "/etc/ceilometer/ceilometer.conf" do
     "keystone_service_host" => ks_service_endpoint["host"],
     "keystone_auth_protocol" => ks_admin_endpoint["scheme"],
     "keystone_auth_port" => ks_admin_endpoint["port"],
-    "keystone_auth_host" => ks_admin_endpoint["host"]
+    "keystone_auth_host" => ks_admin_endpoint["host"],
+    "rabbit_host" => rabbit_info["host"],
+    "rabbit_port" => rabbit_info["port"]
   )
 end

@@ -20,6 +20,8 @@ os_password=<%= @ceilometer_password %>
 os_tenant_name=<%= @ceilometer_tenant %>
 os_auth_url=<%= @keystone_auth_url %>
 
+rabbit_hosts=<%= @rabbit_host -%>:<%= @rabbit_port %>
+
 [keystone_authtoken]
 auth_protocol=<%= @keystone_auth_protocol %>
 auth_host=<%= @keystone_auth_host %>
