@@ -20,10 +20,9 @@
 # and lays down the central agent (which can only exist once currently)
 
 # die early if setup has already been run on another node
-# TODO (mancdaz) - search for a ceilometer-setup role here as other cookbooks?
-#if not search(:node, 'recipes:ceilometer\:\:ceilometer-setup').empty?
-#  Chef::Application.fatal! "You can only have one node with the ceilometer-setup role"
-#end
+if get_role_count('ceilometer-setup', false) > 0
+  Chef::Application.fatal! "You can only have one node with the ceilometer-setup role"
+end
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
@@ -50,9 +49,6 @@ keystone = get_settings_by_role("keystone", "keystone")
 keystone_admin_user = keystone["admin_user"]
 keystone_admin_password = keystone["users"][keystone_admin_user]["password"]
 keystone_admin_tenant = keystone["users"][keystone_admin_user]["default_tenant"]
-
-#ceilometer_api = get_access_endpoint("ceilometer-api", "api", "ceilometer")
-#ceilometer_api = get_bind_endpoint("ceilometer", "api")
 
 mysql_info = create_db_and_user(
   "mysql",
@@ -102,28 +98,3 @@ keystone_role "Grant Ceilometer service role" do
 end
 
 
-# we can only run a single central agent right now so we can install it here
-# (since we can also only run setup once)
-platform_options["central_agent_package_list"].each do |pkg|
-  package pkg do
-    action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
-    options platform_options["package_overrides"]
-  end
-end
-
-include_recipe "ceilometer::ceilometer-common"
-
-execute "ceilometer db sync" do
-  command "ceilometer-dbsync"
-  user "ceilometer"
-  group "ceilometer"
-  action :run
-end
-
-platform_options["central_agent_service_list"].each do |svc|
-  service svc do
-    supports :status => true, :restart => true
-    action [ :enable, :start ]
-    subscribes :restart, "template[/etc/ceilometer/ceilometer.conf]", :delayed
-  end
-end
