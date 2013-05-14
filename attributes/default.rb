@@ -43,7 +43,7 @@ when "debian"
     "central_agent_service_list" => ["ceilometer-agent-central"],
     "collector_package_list" => ["ceilometer-collector"],
     "collector_service_list" => ["ceilometer-collector"],
-    "api_package_list" => ["ceilometer-api, python-mysqldb"],
+    "api_package_list" => ["ceilometer-api"],
     "api_service_list" => ["ceilometer-api"],
     "compute_package_list" => ["ceilometer-agent-compute"],
     "compute_service_list" => ["ceilometer-agent-compute"],
