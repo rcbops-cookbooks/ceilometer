@@ -25,7 +25,7 @@ default["ceilometer"]["logging"]["verbose"] = "false"
 case platform_family
 when "rhel"
   default["ceilometer"]["platform"] = {
-    "supporting_packages" => ["openstack-ceilometer-coommon", "MySQL-python", "python-ceilometerclient"],
+    "supporting_packages" => ["openstack-ceilometer-common", "MySQL-python", "python-ceilometerclient"],
     "central_agent_package_list" => ["openstack-ceilometer-central"],
     "central_agent_service_list" => ["openstack-ceilometer-central"],
     "collector_package_list" => ["openstack-ceilometer-collector"],
