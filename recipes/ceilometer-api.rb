@@ -30,12 +30,10 @@ end
 
 include_recipe "ceilometer::ceilometer-common"
 
-platform_options["api_service_list"].each do |svc|
-  service svc do
-    supports :status => true, :restart => true
-    action [ :enable, :start ]
-    subscribes :restart, "template[/etc/ceilometer/ceilometer.conf]", :delayed
-  end
+service platform_options["api_service"] do
+  supports :status => true, :restart => true
+  action [ :enable, :start ]
+  subscribes :restart, "template[/etc/ceilometer/ceilometer.conf]", :delayed
 end
 
 ceilometer_api = get_access_endpoint("ceilometer-api", "ceilometer","api")

@@ -31,18 +31,16 @@ end
 
 include_recipe "ceilometer::ceilometer-common"
 
-platform_options["central_agent_service_list"].each do |svc|
-  service svc do
-    supports :status => true, :restart => true
-    action [ :enable, :start ]
-    subscribes :restart, "template[/etc/ceilometer/ceilometer.conf]", :delayed
-  end
+service platform_options["central_agent_service"] do
+  supports :status => true, :restart => true
+  action [ :enable, :start ]
+  subscribes :restart, "template[/etc/ceilometer/ceilometer.conf]", :delayed
 end
 
 # is there a vip for us? if so, set up keepalived vrrp
 if rcb_safe_deref(node, "vips.ceilometer-central")
   network = node["ceilometer"]["services"]["central"]["network"]
-  service = platform_options["central_agent_service_list"]
+  service = platform_options["central_agent_service"]
 
   include_recipe "keepalived"
   vip = node["vips"]["ceilometer-central"]

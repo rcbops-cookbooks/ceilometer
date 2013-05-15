@@ -30,10 +30,8 @@ end
 
 include_recipe "ceilometer::ceilometer-common"
 
-platform_options["compute_service_list"].each do |svc|
-  service svc do
-    supports :status => true, :restart => true
-    action [ :enable, :start ]
-    subscribes :restart, "template[/etc/ceilometer/ceilometer.conf]", :delayed
-  end
+service platform_options["compute_service"] do
+  supports :status => true, :restart => true
+  action [ :enable, :start ]
+  subscribes :restart, "template[/etc/ceilometer/ceilometer.conf]", :delayed
 end

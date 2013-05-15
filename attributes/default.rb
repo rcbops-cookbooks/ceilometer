@@ -31,13 +31,13 @@ when "rhel"
   default["ceilometer"]["platform"] = {
     "supporting_packages" => ["openstack-ceilometer-common", "MySQL-python", "python-ceilometerclient"],
     "central_agent_package_list" => ["openstack-ceilometer-central"],
-    "central_agent_service_list" => ["openstack-ceilometer-central"],
+    "central_agent_service" => "openstack-ceilometer-central",
     "collector_package_list" => ["openstack-ceilometer-collector"],
-    "collector_service_list" => ["openstack-ceilometer-collector"],
+    "collector_service" => "openstack-ceilometer-collector",
     "api_package_list" => ["openstack-ceilometer-api"],
-    "api_service_list" => ["openstack-ceilometer-api"],
+    "api_service" => "openstack-ceilometer-api",
     "compute_package_list" => ["openstack-ceilometer-compute"],
-    "compute_service_list" => ["openstack-ceilometer-compute"],
+    "compute_service" => "openstack-ceilometer-compute",
     "service_bin" => "/sbin/service",
     "package_overrides" => ""
   }
@@ -45,13 +45,13 @@ when "debian"
   default["ceilometer"]["platform"] = {
     "supporting_packages" => ["ceilometer-common", "python-mysqldb", "python-ceilometerclient"],
     "central_agent_package_list" => ["ceilometer-agent-central"],
-    "central_agent_service_list" => ["ceilometer-agent-central"],
+    "central_agent_service" => "ceilometer-agent-central",
     "collector_package_list" => ["ceilometer-collector"],
-    "collector_service_list" => ["ceilometer-collector"],
+    "collector_service" => "ceilometer-collector",
     "api_package_list" => ["ceilometer-api"],
-    "api_service_list" => ["ceilometer-api"],
+    "api_service" => "ceilometer-api",
     "compute_package_list" => ["ceilometer-agent-compute"],
-    "compute_service_list" => ["ceilometer-agent-compute"],
+    "compute_service" => "ceilometer-agent-compute",
     "service_bin" => "/usr/sbin/service",
     "package_overrides" => "-o Dpkg::Options:='--force-confold' -o Dpkg::Options:='--force-confdef'"
   }
