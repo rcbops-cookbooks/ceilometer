@@ -11,6 +11,10 @@ default["ceilometer"]["services"]["api"]["network"] = "public"
 default["ceilometer"]["services"]["api"]["port"] =  8777
 default["ceilometer"]["services"]["api"]["path"] = "/"
 
+default["ceilometer"]["services"]["central"]["scheme"] = "tcp"
+default["ceilometer"]["services"]["central"]["network"] = "management"
+default["ceilometer"]["services"]["central"]["port"] =  8777
+
 # should there be syslog settings here?
 default["ceilometer"]["syslog"]["use"] = true
 default["ceilometer"]["syslog"]["facility"] = "LOG_LOCAL3"
@@ -34,6 +38,7 @@ when "rhel"
     "api_service_list" => ["openstack-ceilometer-api"],
     "compute_package_list" => ["openstack-ceilometer-compute"],
     "compute_service_list" => ["openstack-ceilometer-compute"],
+    "service_bin" => "/sbin/service",
     "package_overrides" => ""
   }
 when "debian"
@@ -47,6 +52,7 @@ when "debian"
     "api_service_list" => ["ceilometer-api"],
     "compute_package_list" => ["ceilometer-agent-compute"],
     "compute_service_list" => ["ceilometer-agent-compute"],
+    "service_bin" => "/usr/sbin/service",
     "package_overrides" => "-o Dpkg::Options:='--force-confold' -o Dpkg::Options:='--force-confdef'"
   }
 end

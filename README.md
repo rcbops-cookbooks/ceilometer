@@ -43,6 +43,7 @@ The following cookbooks are dependencies:
 * mysql
 * openssl
 * osops-utils
+* keepalived
 
 Resources/Providers
 ===================
