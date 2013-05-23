@@ -22,6 +22,7 @@ platform_options = node["ceilometer"]["platform"]
 ceilometer = get_settings_by_recipe("ceilometer\:\:ceilometer-setup", "ceilometer")
 ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-api")
 ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
+glance_notification_topic = get_settings_by_role("glance-setup", "glance")["api"]["notification_topic"]
 
 mysql_connect_ip = get_access_endpoint("mysql-master", "mysql", "db")["host"]
 #TODO(mancdaz) - search for a list of rabbits and use HA rabbit queues
@@ -73,6 +74,7 @@ template "/etc/ceilometer/ceilometer.conf" do
     "keystone_auth_port" => ks_admin_endpoint["port"],
     "keystone_auth_host" => ks_admin_endpoint["host"],
     "rabbit_host" => rabbit_info["host"],
-    "rabbit_port" => rabbit_info["port"]
+    "rabbit_port" => rabbit_info["port"],
+    "glance_notification_topic" => glance_notification_topic
   )
 end

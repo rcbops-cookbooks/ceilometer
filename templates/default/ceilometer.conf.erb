@@ -21,6 +21,9 @@ os_tenant_name=<%= @ceilometer_tenant %>
 os_auth_url=<%= @keystone_auth_url %>
 
 rabbit_hosts=<%= @rabbit_host -%>:<%= @rabbit_port %>
+<% if @glance_notification_topic != "notifications" -%>
+notification_topics=notifications,<%= @glance_notification_topic %>
+<% end -%>
 
 [keystone_authtoken]
 auth_protocol=<%= @keystone_auth_protocol %>
