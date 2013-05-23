@@ -38,7 +38,7 @@ end
 
 ceilometer_api = get_access_endpoint("ceilometer-api", "ceilometer","api")
 ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
-keystone = get_settings_by_role("keystone", "keystone")
+keystone = get_settings_by_role("keystone-setup", "keystone")
 
 # register the endpoint
 keystone_endpoint "Register Ceilometer Endpoint" do
