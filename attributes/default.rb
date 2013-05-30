@@ -9,7 +9,7 @@ default["ceilometer"]["service_role"] = "admin"
 default["ceilometer"]["services"]["api"]["scheme"] = "http"
 default["ceilometer"]["services"]["api"]["network"] = "public"
 default["ceilometer"]["services"]["api"]["port"] =  8777
-default["ceilometer"]["services"]["api"]["path"] = "/"
+default["ceilometer"]["services"]["api"]["path"] = ""
 
 default["ceilometer"]["services"]["central"]["scheme"] = "tcp"
 default["ceilometer"]["services"]["central"]["network"] = "management"
