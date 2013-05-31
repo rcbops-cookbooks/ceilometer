@@ -33,7 +33,7 @@ include_recipe "ceilometer::ceilometer-common"
 
 service platform_options["central_agent_service"] do
   supports :status => true, :restart => true
-  action [ :enable, :start ]
+  action [:enable, :start]
   subscribes :restart, "template[/etc/ceilometer/ceilometer.conf]", :delayed
 end
 

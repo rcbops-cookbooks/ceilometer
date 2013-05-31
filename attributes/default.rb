@@ -29,7 +29,8 @@ default["ceilometer"]["logging"]["verbose"] = "false"
 case platform_family
 when "rhel"
   default["ceilometer"]["platform"] = {
-    "supporting_packages" => ["openstack-ceilometer-common", "MySQL-python", "python-ceilometerclient"],
+    "supporting_packages" => ["openstack-ceilometer-common",
+      "MySQL-python", "python-ceilometerclient"],
     "central_agent_package_list" => ["openstack-ceilometer-central"],
     "central_agent_service" => "openstack-ceilometer-central",
     "collector_package_list" => ["openstack-ceilometer-collector"],
@@ -43,7 +44,8 @@ when "rhel"
   }
 when "debian"
   default["ceilometer"]["platform"] = {
-    "supporting_packages" => ["ceilometer-common", "python-mysqldb", "python-ceilometerclient"],
+    "supporting_packages" => ["ceilometer-common", "python-mysqldb",
+      "python-ceilometerclient"],
     "central_agent_package_list" => ["ceilometer-agent-central"],
     "central_agent_service" => "ceilometer-agent-central",
     "collector_package_list" => ["ceilometer-collector"],
@@ -53,6 +55,7 @@ when "debian"
     "compute_package_list" => ["ceilometer-agent-compute"],
     "compute_service" => "ceilometer-agent-compute",
     "service_bin" => "/usr/sbin/service",
-    "package_overrides" => "-o Dpkg::Options:='--force-confold' -o Dpkg::Options:='--force-confdef'"
+    "package_overrides" => "-o Dpkg::Options:='--force-confold'"\
+      " -o Dpkg::Options:='--force-confdef'"
   }
 end
