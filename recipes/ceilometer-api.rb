@@ -32,11 +32,11 @@ include_recipe "ceilometer::ceilometer-common"
 
 service platform_options["api_service"] do
   supports :status => true, :restart => true
-  action [ :enable, :start ]
+  action [:enable, :start]
   subscribes :restart, "template[/etc/ceilometer/ceilometer.conf]", :delayed
 end
 
-ceilometer_api = get_access_endpoint("ceilometer-api", "ceilometer","api")
+ceilometer_api = get_access_endpoint("ceilometer-api", "ceilometer", "api")
 ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
 keystone = get_settings_by_role("keystone-setup", "keystone")
 
@@ -54,4 +54,3 @@ keystone_endpoint "Register Ceilometer Endpoint" do
   endpoint_publicurl ceilometer_api["uri"]
   action :create
 end
-
