@@ -29,7 +29,7 @@ end
 
 platform_options = node["ceilometer"]["platform"]
 
-if node["developer_mode"]
+if node["developer_mode"] == true
   node.set_unless["ceilometer"]["db"]["password"] = "ceilometer"
 else
   node.set_unless["ceilometer"]["db"]["password"] = secure_password
