@@ -37,6 +37,8 @@ service platform_options["api_service"] do
 end
 
 ceilometer_api = get_access_endpoint("ceilometer-api", "ceilometer", "api")
+ceilometer_internal_api = get_access_endpoint("ceilometer-api", "ceilometer", "internal-api")
+ceilometer_admin_api = get_access_endpoint("ceilometer-api", "ceilometer", "admin-api")
 ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
 keystone = get_settings_by_role("keystone-setup", "keystone")
 
@@ -49,8 +51,8 @@ keystone_endpoint "Register Ceilometer Endpoint" do
   auth_token keystone["admin_token"]
   service_type "metering"
   endpoint_region "RegionOne"
-  endpoint_adminurl ceilometer_api["uri"]
-  endpoint_internalurl ceilometer_api["uri"]
+  endpoint_adminurl ceilometer_admin_api["uri"]
+  endpoint_internalurl ceilometer_internal_api["uri"]
   endpoint_publicurl ceilometer_api["uri"]
   action :create
 end
