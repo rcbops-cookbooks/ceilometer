@@ -10,6 +10,19 @@ default["ceilometer"]["services"]["api"]["scheme"] = "http"
 default["ceilometer"]["services"]["api"]["network"] = "public"
 default["ceilometer"]["services"]["api"]["port"] =  8777
 default["ceilometer"]["services"]["api"]["path"] = ""
+default["ceilometer"]["services"]["api"]["cert_file"] = "ceilometer.pem"
+default["ceilometer"]["services"]["api"]["key_file"] = "ceilometer.key"
+default["ceilometer"]["services"]["api"]["wsgi_file"] = "ceilometer-api"
+
+default["ceilometer"]["services"]["internal-api"]["scheme"] = "http"
+default["ceilometer"]["services"]["internal-api"]["network"] = "management"
+default["ceilometer"]["services"]["internal-api"]["port"] =  8777
+default["ceilometer"]["services"]["internal-api"]["path"] = ""
+
+default["ceilometer"]["services"]["admin-api"]["scheme"] = "http"
+default["ceilometer"]["services"]["admin-api"]["network"] = "management"
+default["ceilometer"]["services"]["admin-api"]["port"] =  8777
+default["ceilometer"]["services"]["admin-api"]["path"] = ""
 
 default["ceilometer"]["services"]["central"]["scheme"] = "tcp"
 default["ceilometer"]["services"]["central"]["network"] = "management"
@@ -42,6 +55,7 @@ when "rhel"
     "service_bin" => "/sbin/service",
     "package_overrides" => ""
   }
+  default["ceilometer"]["ssl"]["dir"] = "/etc/pki/tls"
 when "debian"
   default["ceilometer"]["platform"] = {
     "supporting_packages" => ["ceilometer-common", "python-mysqldb",
@@ -58,4 +72,5 @@ when "debian"
     "package_overrides" => "-o Dpkg::Options:='--force-confold'"\
       " -o Dpkg::Options:='--force-confdef'"
   }
+  default["ceilometer"]["ssl"]["dir"] = "/etc/ssl"
 end
