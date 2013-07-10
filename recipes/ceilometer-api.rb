@@ -36,9 +36,9 @@ service platform_options["api_service"] do
   subscribes :restart, "template[/etc/ceilometer/ceilometer.conf]", :delayed
 end
 
-ceilometer_api = get_bind_endpoint("ceilometer-api", "ceilometer", "api")
-ceilometer_internal_api = get_bind_endpoint("ceilometer-api", "ceilometer", "internal-api")
-ceilometer_admin_api = get_bind_endpoint("ceilometer-api", "ceilometer", "admin-api")
+ceilometer_api = get_bind_endpoint("ceilometer", "api")
+ceilometer_internal_api = get_bind_endpoint("ceilometer", "internal-api")
+ceilometer_admin_api = get_bind_endpoint("ceilometer", "admin-api")
 ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
 keystone = get_settings_by_role("keystone-setup", "keystone")
 
