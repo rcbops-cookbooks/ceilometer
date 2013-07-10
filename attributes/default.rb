@@ -11,6 +11,16 @@ default["ceilometer"]["services"]["api"]["network"] = "public"
 default["ceilometer"]["services"]["api"]["port"] =  8777
 default["ceilometer"]["services"]["api"]["path"] = ""
 
+default["ceilometer"]["services"]["internal-api"]["scheme"] = "http"
+default["ceilometer"]["services"]["internal-api"]["network"] = "management"
+default["ceilometer"]["services"]["internal-api"]["port"] =  8777
+default["ceilometer"]["services"]["internal-api"]["path"] = ""
+
+default["ceilometer"]["services"]["admin-api"]["scheme"] = "http"
+default["ceilometer"]["services"]["admin-api"]["network"] = "management"
+default["ceilometer"]["services"]["admin-api"]["port"] =  8777
+default["ceilometer"]["services"]["admin-api"]["path"] = ""
+
 default["ceilometer"]["services"]["central"]["scheme"] = "tcp"
 default["ceilometer"]["services"]["central"]["network"] = "management"
 default["ceilometer"]["services"]["central"]["port"] =  8777
