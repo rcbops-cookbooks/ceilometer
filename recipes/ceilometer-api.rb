@@ -30,10 +30,30 @@ end
 
 include_recipe "ceilometer::ceilometer-common"
 
+ceilometer_api = get_bind_endpoint("ceilometer", "api")
+
 service platform_options["api_service"] do
   supports :status => true, :restart => true
-  action [:enable, :start]
-  subscribes :restart, "template[/etc/ceilometer/ceilometer.conf]", :delayed
+  unless ceilometer_api["scheme"] == "https"
+    action [:enable, :start]
+    subscribes :restart, "template[/etc/ceilometer/ceilometer.conf]", :delayed
+  else
+    action [ :disable, :stop ]
+  end
+end
+
+# Setup SSL
+
+if ceilometer_api["scheme"] == "https"
+  include_recipe "ceilometer::ceilometer-api-ssl"
+else
+  if node.recipe?"apache2"
+    apache_site "openstack-ceilometer-api" do
+      enable false
+      notifies :run, "execute[restore-selinux-context]", :immediately
+      notifies :restart, "service[apache2]", :immediately
+    end
+  end
 end
 
 ceilometer_api = get_bind_endpoint("ceilometer", "api")
