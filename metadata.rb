@@ -9,7 +9,7 @@ version          "0.0.1"
   supports os
 end
 
-%w{ keepalived apt database monitoring mysql osops-utils }.each do |dep|
+%w{ keepalived apt database monitoring mysql osops-utils apache2 }.each do |dep|
   depends dep
 end
 
