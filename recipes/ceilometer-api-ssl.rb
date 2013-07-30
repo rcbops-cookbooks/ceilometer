@@ -73,6 +73,18 @@ cookbook_file "#{node["apache"]["dir"]}/wsgi/#{node["ceilometer"]["services"]["a
   group "root"
 end
 
+unless node["ceilometer"]["services"]["api"].attribute?"cert_override"
+  cert_location = "#{node["ceilometer"]["ssl"]["dir"]}/certs/#{node["ceilometer"]["services"]["api"]["cert_file"]}"
+else
+  cert_location = node["ceilometer"]["services"]["api"]["cert_override"]
+end
+
+unless node["ceilometer"]["services"]["api"].attribute?"key_override"
+  key_location = "#{node["ceilometer"]["ssl"]["dir"]}/private/#{node["ceilometer"]["services"]["api"]["key_file"]}"
+else
+  key_location = node["ceilometer"]["services"]["api"]["key_override"]
+end
+
 ceilometer_bind = get_access_endpoint("ceilometer-api", "ceilometer", "api")
 
 template value_for_platform(
@@ -96,8 +108,8 @@ template value_for_platform(
   variables(
     :listen_ip => ceilometer_bind["host"],
     :service_port => ceilometer_bind["port"],
-    :cert_file => "#{node["ceilometer"]["ssl"]["dir"]}/certs/#{node["ceilometer"]["services"]["api"]["cert_file"]}",
-    :key_file => "#{node["ceilometer"]["ssl"]["dir"]}/private/#{node["ceilometer"]["services"]["api"]["key_file"]}",
+    :cert_file => cert_location,
+    :key_file => key_location,
     :wsgi_file  => "#{node["apache"]["dir"]}/wsgi/#{node["ceilometer"]["services"]["api"]["wsgi_file"]}",
     :proc_group => "ceilometer",
     :log_file => "/var/log/ceilometer/ceilometer.log"
