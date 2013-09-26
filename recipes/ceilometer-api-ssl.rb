@@ -46,7 +46,6 @@ cookbook_file "#{node["ceilometer"]["ssl"]["dir"]}/certs/#{node["ceilometer"]["s
   mode 0644
   owner "root"
   group "root"
-  notifies :run, "execute[restore-selinux-context]", :immediately
 end
 
 cookbook_file "#{node["ceilometer"]["ssl"]["dir"]}/private/#{node["ceilometer"]["services"]["api"]["key_file"]}" do
@@ -54,7 +53,6 @@ cookbook_file "#{node["ceilometer"]["ssl"]["dir"]}/private/#{node["ceilometer"][
   mode 0644
   owner "root"
   group grp
-  notifies :run, "execute[restore-selinux-context]", :immediately
 end
 
 # setup wsgi file
@@ -114,12 +112,10 @@ template value_for_platform(
     :proc_group => "ceilometer",
     :log_file => "/var/log/ceilometer/ceilometer.log"
   )
-  notifies :run, "execute[restore-selinux-context]", :immediately
   notifies :reload, "service[apache2]", :delayed
 end
 
 apache_site "openstack-ceilometer-api" do
   enable true
-  notifies :run, "execute[restore-selinux-context]", :immediately
   notifies :restart, "service[apache2]", :immediately
 end
