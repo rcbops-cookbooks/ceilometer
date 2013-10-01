@@ -26,8 +26,14 @@ if get_role_count('ceilometer-setup', false) > 0
 end
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
+include_recipe "mysql::client"
+include_recipe "mysql::ruby"
 
 platform_options = node["ceilometer"]["platform"]
+
+unless node["ceilometer"]["db"]["password"]
+  Chef::Log.info("Running Ceilometer Setup - Setting Passwords")
+end
 
 if node["developer_mode"] == true
   node.set_unless["ceilometer"]["db"]["password"] = "ceilometer"
@@ -41,8 +47,8 @@ node.set_unless["ceilometer"]["metering_secret"] = secure_password
 # set a secure ceilometer service password
 node.set_unless["ceilometer"]["service_pass"] = secure_password
 
-include_recipe "mysql::client"
-include_recipe "mysql::ruby"
+# Save the attributes
+node.save
 
 ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
 
