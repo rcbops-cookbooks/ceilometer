@@ -25,8 +25,6 @@ if get_role_count('ceilometer-setup', false) > 0
 end
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
-include_recipe "mysql::client"
-include_recipe "mysql::ruby"
 
 platform_options = node["ceilometer"]["platform"]
 
@@ -49,6 +47,10 @@ node.set_unless["ceilometer"]["service_pass"] = secure_password
 # Save the attributes
 node.save
 
+# Include mysql recipies
+include_recipe "mysql::client"
+include_recipe "mysql::ruby"
+
 # DB Setup
 mysql_info = create_db_and_user(
   "mysql",
@@ -57,6 +59,7 @@ mysql_info = create_db_and_user(
   node["ceilometer"]["db"]["password"]
 )
 
+# Include my Ceilometer recipie
 include_recipe "ceilometer::ceilometer-common"
 
 # Run the initial DB Sync
