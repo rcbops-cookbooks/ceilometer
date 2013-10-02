@@ -21,13 +21,16 @@
 
 # die early if setup has already been run on another node
 if get_role_count('ceilometer-setup', false) > 0
-  Chef::Application.fatal! "You can only have one"\
-    " node with the ceilometer-setup role"
+  Chef::Application.fatal! "Only one node can have the ceilometer-setup role"
 end
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 
 platform_options = node["ceilometer"]["platform"]
+
+unless node["ceilometer"]["db"]["password"]
+  Chef::Log.info("Running Ceilometer Setup - Setting Passwords")
+end
 
 if node["developer_mode"] == true
   node.set_unless["ceilometer"]["db"]["password"] = "ceilometer"
@@ -41,16 +44,14 @@ node.set_unless["ceilometer"]["metering_secret"] = secure_password
 # set a secure ceilometer service password
 node.set_unless["ceilometer"]["service_pass"] = secure_password
 
+# Save the attributes
+node.save
+
+# Include mysql recipies
 include_recipe "mysql::client"
 include_recipe "mysql::ruby"
 
-ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
-
-keystone = get_settings_by_role("keystone-setup", "keystone")
-keystone_admin_user = keystone["admin_user"]
-keystone_admin_password = keystone["users"][keystone_admin_user]["password"]
-keystone_admin_tenant = keystone["users"][keystone_admin_user]["default_tenant"]
-
+# DB Setup
 mysql_info = create_db_and_user(
   "mysql",
   node["ceilometer"]["db"]["name"],
@@ -58,15 +59,24 @@ mysql_info = create_db_and_user(
   node["ceilometer"]["db"]["password"]
 )
 
+# Include my Ceilometer recipie
 include_recipe "ceilometer::ceilometer-common"
 
+# Run the initial DB Sync
 execute "ceilometer db sync" do
-  command "ceilometer-dbsync"
   user "ceilometer"
   group "ceilometer"
-  action :nothing
-  subscribes :run, "template[/etc/ceilometer/ceilometer.conf]", :immediately
+  command "ceilometer-dbsync"
+  action :run
 end
+
+# Get Keystone Data
+ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
+
+keystone = get_settings_by_role("keystone-setup", "keystone")
+keystone_admin_user = keystone["admin_user"]
+keystone_admin_password = keystone["users"][keystone_admin_user]["password"]
+keystone_admin_tenant = keystone["users"][keystone_admin_user]["default_tenant"]
 
 # register the service
 keystone_service "Register Ceilometer Service" do

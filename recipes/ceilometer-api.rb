@@ -50,7 +50,6 @@ else
   if node.recipe?"apache2"
     apache_site "openstack-ceilometer-api" do
       enable false
-      notifies :run, "execute[restore-selinux-context]", :immediately
       notifies :restart, "service[apache2]", :immediately
     end
   end
