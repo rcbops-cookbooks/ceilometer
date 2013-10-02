@@ -56,6 +56,30 @@ directory "/var/lib/ceilometer" do
   mode "700"
 end
 
+template "/etc/ceilometer/pipeline.yaml" do
+  source "pipeline.yaml.erb"
+  owner "ceilometer"
+  group "ceilometer"
+  mode "0644"
+  not_if {File.exists?("/etc/ceilometer/pipeline.yaml")}
+end
+
+template "/etc/ceilometer/sources.json" do
+  source "sources.json.erb"
+  owner "ceilometer"
+  group "ceilometer"
+  mode "0644"
+  not_if {File.exists?("/etc/ceilometer/sources.json")}
+end
+
+template "/etc/ceilometer/policy.json" do
+  source "policy.json.erb"
+  owner "ceilometer"
+  group "ceilometer"
+  mode "0644"
+  not_if {File.exists?("/etc/ceilometer/policy.json")}
+end
+
 template "/etc/ceilometer/ceilometer.conf" do
   source "ceilometer.conf.erb"
   owner "ceilometer"
