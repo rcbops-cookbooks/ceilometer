@@ -21,7 +21,7 @@
 
 # die early if setup has already been run on another node
 if get_role_count('ceilometer-setup', false) > 0
-  Chef::Application.fatal! "You can only have one node with the ceilometer-setup role"
+  Chef::Application.fatal! "Only one node can have the ceilometer-setup role"
 end
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
