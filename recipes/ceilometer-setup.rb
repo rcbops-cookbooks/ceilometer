@@ -63,6 +63,7 @@ mysql_info = create_db_and_user(
 include_recipe "ceilometer::ceilometer-common"
 
 # TODO(Kevin) REMOVE THIS WHEN THE PACKAGE "alembic==0.6.0" EXISTS IN PRECISE
+Chef::Log.info("Running a DIRTY hack to get a newer alembic package installed.")
 case node["platform"]
 when "ubuntu"
   include_recipe "apt"
