@@ -19,19 +19,20 @@
 
 platform_options = node["ceilometer"]["platform"]
 
-ceilometer =
-  get_settings_by_recipe("ceilometer\:\:ceilometer-setup", "ceilometer")
-ks_service_endpoint =
-  get_access_endpoint("keystone-api", "keystone", "service-api")
-ks_admin_endpoint =
-  get_access_endpoint("keystone-api", "keystone", "admin-api")
-glance_notification_topic =
-  get_settings_by_role("glance-setup", "glance")["api"]["notification_topic"]
+# Get Services Data
+ceilometer = get_settings_by_recipe("ceilometer\:\:ceilometer-setup", "ceilometer")
+ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-api")
+ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
+glance_notification_topic = get_settings_by_role("glance-setup", "glance")["api"]["notification_topic"]
 
+# get MySQL Things
 mysql_connect_ip = get_access_endpoint("mysql-master", "mysql", "db")["host"]
-#TODO(mancdaz) - search for a list of rabbits and use HA rabbit queues
-rabbit_info = get_access_endpoint("rabbitmq-server", "rabbitmq", "queue")
 
+# Get my Rabbit Queues and Settings
+rabbit_info = get_access_endpoint("rabbitmq-server", "rabbitmq", "queue")
+rabbit_settings = get_settings_by_role("rabbitmq-server", "rabbitmq")
+
+# Install Packages
 platform_options["supporting_packages"].each do |pkg|
   package pkg do
     action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
@@ -86,6 +87,8 @@ template "/etc/ceilometer/ceilometer.conf" do
   group "ceilometer"
   mode "0660"
   variables(
+    "verbose" => ceilometer["logging"]["verbose"],
+    "debug" => ceilometer["logging"]["debug"],
     "metering_secret" => ceilometer["metering_secret"],
     "mysql_user" => ceilometer["db"]["username"],
     "mysql_password" => ceilometer["db"]["password"],
@@ -103,6 +106,7 @@ template "/etc/ceilometer/ceilometer.conf" do
     "keystone_auth_host" => ks_admin_endpoint["host"],
     "rabbit_host" => rabbit_info["host"],
     "rabbit_port" => rabbit_info["port"],
+    "rabbit_ha_queues" => rabbit_settings["cluster"] ? "True" : "False",
     "glance_notification_topic" => glance_notification_topic
   )
 end
