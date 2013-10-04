@@ -33,7 +33,7 @@ default["ceilometer"]["syslog"]["use"] = true
 default["ceilometer"]["syslog"]["facility"] = "LOG_LOCAL3"
 
 default["ceilometer"]["logging"]["debug"] = "false"
-default["ceilometer"]["logging"]["verbose"] = "false"
+default["ceilometer"]["logging"]["verbose"] = "true"
 
 # metering secret should be secret and unguessable, to prevent
 # spoofing metrics
