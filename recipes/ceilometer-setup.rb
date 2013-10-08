@@ -62,29 +62,13 @@ mysql_info = create_db_and_user(
 # Include my Ceilometer recipie
 include_recipe "ceilometer::ceilometer-common"
 
-# TODO(Kevin) REMOVE THIS WHEN THE PACKAGE "alembic==0.6.0" EXISTS IN PRECISE
-Chef::Log.info("Running a DIRTY hack to get a newer alembic package installed.")
+# TODO(breu): verify this on RPM install
 case node["platform"]
 when "ubuntu"
-  include_recipe "apt"
-
-  # Add the Temp Repo we need
-  apt_repository "CeilometerSaucyUniversal" do
-    uri "http://ubuntu.mirror.cambrium.nl/ubuntu/"
-    distribution "saucy"
-    components ["main universe"]
-  end
-  
   # Install alembic
   package "alembic" do
     options platform_options["package_overrides"]
     action :upgrade
-  end
-
-  # Remove the temp repo so things don't explode
-  apt_repository "CeilometerSaucyUniversal" do
-    action :remove
-    notifies :run, "execute[apt-get update]", :immediately
   end
 end
 
