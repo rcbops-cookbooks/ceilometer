@@ -53,7 +53,7 @@ when "rhel"
     "compute_package_list" => ["openstack-ceilometer-compute"],
     "compute_service" => "openstack-ceilometer-compute",
     "service_bin" => "/sbin/service",
-    "package_overrides" => ""
+    "package_options" => ""
   }
   default["ceilometer"]["ssl"]["dir"] = "/etc/pki/tls"
 when "debian"
@@ -69,7 +69,7 @@ when "debian"
     "compute_package_list" => ["ceilometer-agent-compute"],
     "compute_service" => "ceilometer-agent-compute",
     "service_bin" => "/usr/sbin/service",
-    "package_overrides" => "-o Dpkg::Options:='--force-confold'"\
+    "package_options" => "-o Dpkg::Options:='--force-confold'"\
       " -o Dpkg::Options:='--force-confdef'"
   }
   default["ceilometer"]["ssl"]["dir"] = "/etc/ssl"

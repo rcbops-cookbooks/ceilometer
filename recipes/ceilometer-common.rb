@@ -36,7 +36,7 @@ rabbit_settings = get_settings_by_role("rabbitmq-server", "rabbitmq")
 platform_options["supporting_packages"].each do |pkg|
   package pkg do
     action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
-    options platform_options["package_overrides"]
+    options platform_options["package_options"]
   end
 end
 

@@ -67,7 +67,7 @@ case node["platform"]
 when "ubuntu"
   # Install alembic
   package "alembic" do
-    options platform_options["package_overrides"]
+    options platform_options["package_options"]
     action :upgrade
   end
 end
