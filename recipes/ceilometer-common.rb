@@ -81,6 +81,20 @@ template "/etc/ceilometer/policy.json" do
   not_if {File.exists?("/etc/ceilometer/policy.json")}
 end
 
+notification_provider = node["ceilometer"]["notification"]["driver"]
+case notification_provider
+when "no_op"
+  notification_driver = "ceilometer.openstack.common.notifier.no_op_notifier"
+when "rpc"
+  notification_driver = "ceilometer.openstack.common.notifier.rpc_notifier"
+when "log"
+  notification_driver = "ceilometer.openstack.common.notifier.log_notifier"
+else
+  msg = "#{notification_provider}, is not currently supported by these cookbooks."
+  Chef::Application.fatal! msg
+end
+
+
 template "/etc/ceilometer/ceilometer.conf" do
   source "ceilometer.conf.erb"
   owner "ceilometer"
@@ -107,6 +121,8 @@ template "/etc/ceilometer/ceilometer.conf" do
     "rabbit_host" => rabbit_info["host"],
     "rabbit_port" => rabbit_info["port"],
     "rabbit_ha_queues" => rabbit_settings["cluster"] ? "True" : "False",
+    "notification_driver" => notification_driver,
+    "notification_topics" => node["ceilometer"]["notification"]["topics"],
     "glance_notification_topic" => glance_notification_topic
   )
 end
