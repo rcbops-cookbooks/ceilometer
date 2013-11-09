@@ -20,8 +20,8 @@ default["ceilometer"]["db"]["name"] = "ceilometer"
 default["ceilometer"]["db"]["username"] = "ceilometer"
 
 # Set the notification Driver
-# Options are no_op, rpc, log, rabbit
-default["ceilometer"]["notification"]["driver"] = "rabbit"
+# Options are no_op, rpc, log
+default["ceilometer"]["notification"]["driver"] = "no_op"
 default["ceilometer"]["notification"]["topics"] = "notifications"
 
 default["ceilometer"]["service_tenant_name"] = "service"
