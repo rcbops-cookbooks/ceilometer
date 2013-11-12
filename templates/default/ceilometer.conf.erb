@@ -27,7 +27,7 @@ os_auth_url=<%= @keystone_auth_url %>
 rabbit_password=guest
 rabbit_hosts=<%= @rabbit_host %>:<%= @rabbit_port %>
 rabbit_ha_queues=<%= @rabbit_ha_queues %>
-
+rpc_backend=ceilometer.openstack.common.rpc.impl_kombu
 
 ##### GLANCE #####
 <% if @glance_notification_topic != "notifications" -%>
