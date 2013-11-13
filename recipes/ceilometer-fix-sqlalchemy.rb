@@ -33,7 +33,7 @@ versions.each do |version, files|
         group "ceilometer"
         command "ceilometer-dbsync"
         action :nothing
-        subscribes :execute, "template[#{version} #{name}]", :immediately
+        subscribes :run, "template[#{version} #{name}]", :immediately
       end 
     end
   end
