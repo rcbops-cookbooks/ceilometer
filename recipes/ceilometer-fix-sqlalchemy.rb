@@ -37,3 +37,11 @@ template "/usr/lib/python2.7/dist-packages/ceilometer/utils.py" do
     ::Chef::Recipe::Patch.check_package_version("python-ceilometer", "2013.2-0ubuntu1~cloud0", node)
   }
 end
+
+execute "update ceilometer db (migration)" do
+  user "ceilometer"
+  group "ceilometer"
+  command "ceilometer-dbsync"
+  action :nothing
+  subscribes :execute, "template[/usr/lib/python2.7/dist-packages/ceilometer/storage/sqlalchemy/migrate_repo/versions/020_add_metadata_tables.py]", :immediately
+end
