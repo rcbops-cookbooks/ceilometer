@@ -1,47 +1,40 @@
-template "/usr/lib/python2.7/dist-packages/ceilometer/storage/impl_sqlalchemy.py" do
-  source "patches/impl_sqlalchemy.py.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  only_if {
-    ::Chef::Recipe::Patch.check_package_version("python-ceilometer", "2013.2-0ubuntu1~cloud0", node)
-  }
-end
+platform_options = node["ceilometer"]["platform"]
 
-template "/usr/lib/python2.7/dist-packages/ceilometer/storage/sqlalchemy/migrate_repo/versions/020_add_metadata_tables.py" do
-  source "patches/020_add_metadata_tables.py.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  only_if {
-    ::Chef::Recipe::Patch.check_package_version("python-ceilometer", "2013.2-0ubuntu1~cloud0", node)
-  }
-end
+versions = {
+  "2013.2-1.el6" =>
+  ["/usr/lib/python2.6/site-packages/ceilometer/storage/impl_sqlalchemy.py",
+   "/usr/lib/python2.6/site-packages/ceilometer/storage/sqlalchemy/migrate_repo/versions/020_add_metadata_tables.py",
+   "/usr/lib/python2.6/site-packages/ceilometer/storage/sqlalchemy/models.py",
+   "/usr/lib/python2.6/site-packages/ceilometer/utils.py"],
+  "2013.2-0ubuntu1~cloud0" =>
+  ["/usr/lib/python2.7/dist-packages/ceilometer/storage/impl_sqlalchemy.py",
+   "/usr/lib/python2.7/dist-packages/ceilometer/storage/sqlalchemy/migrate_repo/versions/020_add_metadata_tables.py",
+   "/usr/lib/python2.7/dist-packages/ceilometer/storage/sqlalchemy/models.py",
+   "/usr/lib/python2.7/dist-packages/ceilometer/utils.py"
+  ]}
 
-template "/usr/lib/python2.7/dist-packages/ceilometer/storage/sqlalchemy/models.py" do
-  source "patches/models.py.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  only_if {
-    ::Chef::Recipe::Patch.check_package_version("python-ceilometer", "2013.2-0ubuntu1~cloud0", node)
-  }
-end
-
-template "/usr/lib/python2.7/dist-packages/ceilometer/utils.py" do
-  source "patches/utils.py.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  only_if {
-    ::Chef::Recipe::Patch.check_package_version("python-ceilometer", "2013.2-0ubuntu1~cloud0", node)
-  }
-end
-
-execute "update ceilometer db (migration)" do
-  user "ceilometer"
-  group "ceilometer"
-  command "ceilometer-dbsync"
-  action :nothing
-  subscribes :execute, "template[/usr/lib/python2.7/dist-packages/ceilometer/storage/sqlalchemy/migrate_repo/versions/020_add_metadata_tables.py]", :immediately
+versions.each do |version, files|
+  files.each do |file|
+    name = ::File.basename(file)
+    template "#{version} #{name}" do
+      source "patches/#{name}.erb"
+      path file
+      owner "root"
+      group "root"
+      mode "0644"
+      only_if {
+        ::Chef::Recipe::Patch.check_package_version("python-ceilometer", version, node)
+      }
+      notifies :restart, platform_options["api_service"], :delayed
+    end
+    if name == "020_add_metadata_tables.py" then
+      execute "update ceilometer db (migration)" do
+        user "ceilometer"
+        group "ceilometer"
+        command "ceilometer-dbsync"
+        action :nothing
+        subscribes :execute, "template[#{version} #{name}]", :immediately
+      end 
+    end
+  end
 end
