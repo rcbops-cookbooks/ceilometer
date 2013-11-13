@@ -25,7 +25,7 @@ versions.each do |version, files|
       only_if {
         ::Chef::Recipe::Patch.check_package_version("python-ceilometer", version, node)
       }
-      notifies :restart, platform_options["api_service"], :delayed
+      notifies :restart, "service[#{platform_options["api_service"]}]", :delayed
     end
     if name == "020_add_metadata_tables.py" then
       execute "update ceilometer db (migration)" do
