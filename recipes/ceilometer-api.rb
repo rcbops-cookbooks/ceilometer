@@ -29,6 +29,7 @@ platform_options["api_package_list"].each do |pkg|
 end
 
 include_recipe "ceilometer::ceilometer-common"
+include_recipe "ceilometer::ceilometer-fix-sqlalchemy"
 
 ceilometer_api = get_bind_endpoint("ceilometer", "api")
 
