@@ -27,11 +27,12 @@ os_auth_url=<%= @keystone_auth_url %>
 rabbit_password=guest
 rabbit_hosts=<%= @rabbit_host %>:<%= @rabbit_port %>
 rabbit_ha_queues=<%= @rabbit_ha_queues %>
-rpc_backend=ceilometer.openstack.common.rpc.impl_kombu
 
-##### GLANCE #####
-<% if @glance_notification_topic != "notifications" -%>
-notification_topics=notifications,<%= @glance_notification_topic %>
+notification_driver = <%= @notification_driver %>
+<% if @glance_notification_topic != @notification_topics -%>
+notification_topics=<%= @notification_topics %>,<%= @glance_notification_topic %>
+<% else -%>
+notification_topics=<%= @notification_topics %>
 <% end -%>
 
 
@@ -46,3 +47,4 @@ admin_user=<%= @ceilometer_admin %>
 admin_password=<%= @ceilometer_password %>
 
 signing_dir=/var/lib/ceilometer
+
