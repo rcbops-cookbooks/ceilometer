@@ -69,7 +69,7 @@ keystone_endpoint "Register Ceilometer Endpoint" do
   api_ver ks_admin_endpoint["path"]
   auth_token keystone["admin_token"]
   service_type "metering"
-  endpoint_region "RegionOne"
+  endpoint_region node["osops"]["region"]
   endpoint_adminurl ceilometer_admin_api["uri"]
   endpoint_internalurl ceilometer_internal_api["uri"]
   endpoint_publicurl ceilometer_api["uri"]
