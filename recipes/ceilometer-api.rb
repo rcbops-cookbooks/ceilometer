@@ -74,5 +74,5 @@ keystone_endpoint "Register Ceilometer Endpoint" do
   endpoint_adminurl ceilometer_admin_api["uri"]
   endpoint_internalurl ceilometer_internal_api["uri"]
   endpoint_publicurl ceilometer_api["uri"]
-  action :create
+  action :recreate
 end
