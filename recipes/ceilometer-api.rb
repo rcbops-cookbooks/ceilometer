@@ -76,3 +76,13 @@ keystone_endpoint "Register Ceilometer Endpoint" do
   endpoint_publicurl ceilometer_api["uri"]
   action :recreate
 end
+
+# Add a monit process for heat
+include_recipe "monit::server"
+
+# matching a process name
+monit_procmon platform_options["api_service"] do
+  process_name platform_options["api_service"]
+  start_cmd "service #{platform_options["api_service"]} start"
+  stop_cmd "service #{platform_options["api_service"]} stop"
+end
