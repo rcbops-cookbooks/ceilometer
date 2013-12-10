@@ -10,6 +10,11 @@ use_syslog=false
 metering_secret=<%= @metering_secret %>
 
 
+##### BINDING #####
+bind_host=<%= @bind_host %>
+bind_port=<%= @bind_port %>
+
+
 ##### DATABASE #####
 database_connection = mysql://<%= "#{@mysql_user}:#{@mysql_password}@#{@mysql_host}/#{@mysql_db}" %>
 mysql_engine=InnoDB
