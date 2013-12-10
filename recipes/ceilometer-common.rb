@@ -21,6 +21,7 @@ platform_options = node["ceilometer"]["platform"]
 
 # Get Services Data
 ceilometer = get_settings_by_recipe("ceilometer\:\:ceilometer-setup", "ceilometer")
+ce_service_endpoint = get_access_endpoint("ceilometer-api", "ceilometer", "api")
 ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-api")
 ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
 glance_notification_topic = get_settings_by_role("glance-setup", "glance")["api"]["notification_topic"]
@@ -111,6 +112,8 @@ template "/etc/ceilometer/ceilometer.conf" do
     "ceilometer_admin" => ceilometer["service_user"],
     "ceilometer_password" => ceilometer["service_pass"],
     "ceilometer_tenant" => ceilometer["service_tenant_name"],
+    "bind_host" => ce_service_endpoint["host"],
+    "bind_port" => ce_service_endpoint["port"],
     "keystone_auth_url" => ks_service_endpoint["uri"],
     "keystone_service_protocol" => ks_service_endpoint["scheme"],
     "keystone_service_port" => ks_service_endpoint["port"],
