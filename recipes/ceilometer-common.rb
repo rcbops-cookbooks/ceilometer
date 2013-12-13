@@ -21,7 +21,7 @@ platform_options = node["ceilometer"]["platform"]
 
 # Get Services Data
 ceilometer = get_settings_by_recipe("ceilometer\:\:ceilometer-setup", "ceilometer")
-ce_service_endpoint = get_access_endpoint("ceilometer-api", "ceilometer", "api")
+ce_service_endpoint = get_bind_endpoint("ceilometer", "api")
 ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-api")
 ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
 glance_notification_topic = get_settings_by_role("glance-setup", "glance")["api"]["notification_topic"]
