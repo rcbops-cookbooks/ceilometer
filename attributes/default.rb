@@ -61,6 +61,8 @@ default["ceilometer"]["logging"]["verbose"] = "true"
 # spoofing metrics
 # default["ceilometer"]["metering_secret"] = "ceilometer"
 
+procmatch_base = '^((/usr/bin/)?python\d? )?(/usr/bin/)?'
+
 case platform_family
 when "rhel"
   default["ceilometer"]["platform"] = {
@@ -68,12 +70,16 @@ when "rhel"
       "MySQL-python", "python-ceilometerclient"],
     "central_agent_package_list" => ["openstack-ceilometer-central"],
     "central_agent_service" => "openstack-ceilometer-central",
+    "central_agent_procmatch" => procmatch_base + "ceilometer-agent-central\b",
     "collector_package_list" => ["openstack-ceilometer-collector"],
     "collector_service" => "openstack-ceilometer-collector",
+    "collector_procmatch" => procmatch_base + "ceilometer-collector\b",
     "api_package_list" => ["openstack-ceilometer-api"],
     "api_service" => "openstack-ceilometer-api",
+    "api_procmatch" => procmatch_base + "ceilometer-api\b",
     "compute_package_list" => ["openstack-ceilometer-compute"],
     "compute_service" => "openstack-ceilometer-compute",
+    "compute_procmatch" => procmatch_base + "ceilometer-agent-compute\b",
     "service_bin" => "/sbin/service",
     "package_options" => ""
   }
@@ -84,12 +90,16 @@ when "debian"
       "python-ceilometerclient"],
     "central_agent_package_list" => ["ceilometer-agent-central"],
     "central_agent_service" => "ceilometer-agent-central",
+    "central_agent_procmatch" => procmatch_base + "ceilometer-agent-central\b",
     "collector_package_list" => ["ceilometer-collector"],
     "collector_service" => "ceilometer-collector",
+    "collector_procmatch" => procmatch_base + "ceilometer-collector\b",
     "api_package_list" => ["ceilometer-api"],
     "api_service" => "ceilometer-api",
+    "api_procmatch" => procmatch_base + "ceilometer-api\b",
     "compute_package_list" => ["ceilometer-agent-compute"],
     "compute_service" => "ceilometer-agent-compute",
+    "compute_procmatch" => procmatch_base + "ceilometer-agent-compute\b",
     "service_bin" => "/usr/sbin/service",
     "package_options" => "-o Dpkg::Options:='--force-confold'"\
       " -o Dpkg::Options:='--force-confdef'"
