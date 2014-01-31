@@ -29,11 +29,7 @@ rabbit_hosts=<%= @rabbit_host %>:<%= @rabbit_port %>
 rabbit_ha_queues=<%= @rabbit_ha_queues %>
 
 notification_driver = <%= @notification_driver %>
-<% if @glance_notification_topic != @notification_topics -%>
-notification_topics=<%= @notification_topics %>,<%= @glance_notification_topic %>
-<% else -%>
-notification_topics=<%= @notification_topics %>
-<% end -%>
+notification_topics = <%= @notification_topics %>
 
 
 ##### KEYSTONE #####
@@ -47,6 +43,7 @@ admin_user=<%= @ceilometer_admin %>
 admin_password=<%= @ceilometer_password %>
 
 signing_dir=/var/lib/ceilometer
+
 
 [api]
 ##### BINDING #####
