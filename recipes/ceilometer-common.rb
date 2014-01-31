@@ -24,7 +24,6 @@ ceilometer = get_settings_by_recipe("ceilometer\:\:ceilometer-setup", "ceilomete
 ce_service_endpoint = get_bind_endpoint("ceilometer", "api")
 ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-api")
 ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
-glance_notification_topic = get_settings_by_role("glance-setup", "glance")["api"]["notification_topic"]
 
 # get MySQL Things
 mysql_connect_ip = get_mysql_endpoint["host"]
@@ -125,7 +124,6 @@ template "/etc/ceilometer/ceilometer.conf" do
     "rabbit_port" => rabbit_info["port"],
     "rabbit_ha_queues" => rabbit_settings["cluster"] ? "True" : "False",
     "notification_driver" => notification_driver,
-    "notification_topics" => node["ceilometer"]["notification"]["topics"],
-    "glance_notification_topic" => glance_notification_topic
+    "notification_topics" => node["ceilometer"]["notification"]["topics"]
   )
 end
