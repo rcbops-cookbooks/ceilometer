@@ -86,8 +86,8 @@ when "rhel"
   default["ceilometer"]["ssl"]["dir"] = "/etc/pki/tls"
 when "debian"
   default["ceilometer"]["platform"] = {
-    "supporting_packages" => ["ceilometer-common", "python-mysqldb",
-      "python-ceilometerclient"],
+    "supporting_packages" => ["python-swiftclient", "python-mysqldb",
+                              "python-ceilometerclient", "ceilometer-common"],
     "central_agent_package_list" => ["ceilometer-agent-central"],
     "central_agent_service" => "ceilometer-agent-central",
     "central_agent_procmatch" => procmatch_base + 'ceilometer-agent-central\b',
