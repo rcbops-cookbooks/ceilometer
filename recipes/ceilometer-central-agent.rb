@@ -20,6 +20,7 @@
 # TODO(mancdaz)only a single central-agent can be running at any one time so we need to
 # add in the keepalived stuff here to sit an ip on top of multiple instances
 
+include_recipe "ceilometer::ceilometer-common"
 platform_options = node["ceilometer"]["platform"]
 
 platform_options["central_agent_package_list"].each do |pkg|
@@ -29,7 +30,6 @@ platform_options["central_agent_package_list"].each do |pkg|
   end
 end
 
-include_recipe "ceilometer::ceilometer-common"
 
 service platform_options["central_agent_service"] do
   supports :status => true, :restart => true
