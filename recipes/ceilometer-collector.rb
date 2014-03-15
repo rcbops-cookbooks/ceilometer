@@ -20,6 +20,7 @@
 # this sets up ceilometer on collector (runs the ceilometer collector to process
 # queue messages that are placed there by the agents)
 
+include_recipe "ceilometer::ceilometer-common"
 platform_options = node["ceilometer"]["platform"]
 
 platform_options["collector_package_list"].each do |pkg|
@@ -29,7 +30,6 @@ platform_options["collector_package_list"].each do |pkg|
   end
 end
 
-include_recipe "ceilometer::ceilometer-common"
 
 service platform_options["collector_service"] do
   supports :status => true, :restart => true

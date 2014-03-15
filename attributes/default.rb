@@ -66,8 +66,8 @@ procmatch_base = '^((/usr/bin/)?python\d? )?(/usr/bin/)?'
 case platform_family
 when "rhel"
   default["ceilometer"]["platform"] = {
-    "supporting_packages" => ["openstack-ceilometer-common",
-      "MySQL-python", "python-ceilometerclient"],
+    "supporting_packages" => ["python-warlock",
+      "MySQL-python", "openstack-ceilometer-common", "python-ceilometerclient"],
     "central_agent_package_list" => ["openstack-ceilometer-central"],
     "central_agent_service" => "openstack-ceilometer-central",
     "central_agent_procmatch" => procmatch_base + 'ceilometer-agent-central\b',
@@ -87,7 +87,7 @@ when "rhel"
 when "debian"
   default["ceilometer"]["platform"] = {
     "supporting_packages" => ["python-swiftclient", "python-mysqldb",
-                              "python-ceilometerclient", "ceilometer-common"],
+                              "python-ceilometerclient", "python-warlock", "ceilometer-common"],
     "central_agent_package_list" => ["ceilometer-agent-central"],
     "central_agent_service" => "ceilometer-agent-central",
     "central_agent_procmatch" => procmatch_base + 'ceilometer-agent-central\b',
