@@ -19,7 +19,10 @@
 
 # this sets up ceilometer on compute nodes (runs the compute agent)
 
+include_recipe "ceilometer::ceilometer-common"
 platform_options = node["ceilometer"]["platform"]
+
+include_recipe "ceilometer::ceilometer-fix-sqlalchemy-compute"
 
 platform_options["compute_package_list"].each do |pkg|
   package pkg do
@@ -27,8 +30,6 @@ platform_options["compute_package_list"].each do |pkg|
     options platform_options["package_options"]
   end
 end
-
-include_recipe "ceilometer::ceilometer-common"
 
 service platform_options["compute_service"] do
   supports :status => true, :restart => true

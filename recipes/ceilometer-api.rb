@@ -19,6 +19,7 @@
 
 # this sets up ceilometer on compute nodes (runs the compute agent)
 
+include_recipe "ceilometer::ceilometer-common"
 platform_options = node["ceilometer"]["platform"]
 
 platform_options["api_package_list"].each do |pkg|
@@ -28,7 +29,6 @@ platform_options["api_package_list"].each do |pkg|
   end
 end
 
-include_recipe "ceilometer::ceilometer-common"
 include_recipe "ceilometer::ceilometer-fix-sqlalchemy"
 
 ceilometer_api = get_bind_endpoint("ceilometer", "api")
