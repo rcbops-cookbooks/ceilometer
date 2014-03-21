@@ -1,5 +1,5 @@
 Support
-=======
+========
 
 Issues have been disabled for this repository.
 Any issues with this cookbook should be raised here:
