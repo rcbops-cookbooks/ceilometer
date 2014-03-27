@@ -81,6 +81,17 @@ template "/etc/ceilometer/policy.json" do
   not_if {File.exists?("/etc/ceilometer/policy.json")}
 end
 
+case node['platform']
+  when 'redhat', 'centos'
+  # RHEL YOUR DOING IT WRONG!
+  cookbook_file "/usr/share/ceilometer/ceilometer-dist.conf" do
+    source "ceilometer-dist.conf"
+    mode 0644
+    owner "ceilometer"
+    group "ceilometer"
+  end
+end
+
 notification_provider = node["ceilometer"]["notification"]["driver"]
 case notification_provider
 when "no_op"
