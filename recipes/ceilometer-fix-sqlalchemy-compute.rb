@@ -39,7 +39,8 @@ versions = {
   "2013.2-1.el6" => rhel_patches,
   "2013.2-0ubuntu1~cloud0" => deb_patches,
   "2013.2.1-0ubuntu2~cloud0" => deb_patches,
-  "2013.2.2-0ubuntu1~cloud0" => deb_patches
+  "2013.2.2-0ubuntu1~cloud0" => deb_patches,
+  "2013.2.3-0ubuntu1~cloud0" => deb_patches
 }
 
 versions.each do |version, files|
